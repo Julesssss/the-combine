@@ -5,8 +5,14 @@ SCRIPT_DIR=$(dirname "$0")
 
 # Restricted repeats
 while true; do
-#for i in {1..10}; do
+
+    # Extract
     bash "$SCRIPT_DIR/extract.sh"
-    printf "\n\nwaiting..."
-    sleep 10  # Wait for cooldown
+    sleep 2
+
+    # Cooldown
+    for i in {1..7}; do
+        printf "\nwaiting for cooldown..."
+        sleep 10 # Wait for cooldown
+    done
 done
