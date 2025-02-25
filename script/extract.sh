@@ -4,7 +4,7 @@
 API_TOKEN=$(cat "$(dirname "$0")/../api_token.txt")
 
 SHIP_NAME="$1"
-echo "Received parameter: $SHIP_NAME"
+echo "SHIP_NAME: $SHIP_NAME"
 
 printf "\nExtracted:\n"
 response=$(curl -s --location --request POST 'https://api.spacetraders.io/v2/my/ships/JULTEST-3/extract' \

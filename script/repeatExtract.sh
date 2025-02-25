@@ -4,7 +4,7 @@
 SCRIPT_DIR=$(dirname "$0")
 
 # Ship to control
-SHIP_NAME="JULTEST_3"
+SHIP_NAME=${1:-"DefaultValue"}
 
 # Restricted repeats
 while true; do
