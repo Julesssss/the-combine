@@ -3,11 +3,14 @@
 # Get initial script dir
 SCRIPT_DIR=$(dirname "$0")
 
+# Ship to control
+SHIP_NAME="JULTEST_3"
+
 # Restricted repeats
 while true; do
 
     # Extract
-    bash "$SCRIPT_DIR/extract.sh"
+    bash "$SCRIPT_DIR/extract.sh" "$SHIP_NAME"
     sleep 2
 
     # Cooldown
