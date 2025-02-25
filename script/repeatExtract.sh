@@ -4,7 +4,7 @@
 SCRIPT_DIR=$(dirname "$0")
 
 # Ship to control
-SHIP_NAME=${1:-"DefaultValue"}
+SHIP_NAME=${1:-"NO SHIP PASSED"}
 
 # Restricted repeats
 while true; do
