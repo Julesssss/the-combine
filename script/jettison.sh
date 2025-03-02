@@ -2,10 +2,13 @@
 
 # Get API token from root dir
 API_TOKEN=$(cat "$(dirname "$0")/../api_token.txt")
-SYMBOL=${1:-"NO MATERIAL PASSED"}
+
+# Ship to control
+SHIP_NAME=${1:-"NO SHIP PASSED"}
+SYMBOL=${2:-"NO MATERIAL PASSED"}
 
 # Jettison unwanted cargo
-response=$(curl -s --location 'https://api.spacetraders.io/v2/my/ships/THECOMBINE-1/jettison' \
+response=$(curl -s --location "https://api.spacetraders.io/v2/my/ships/$SHIP_NAME/jettison" \
 --header 'Content-Type: application/json' \
 --header "Authorization: Bearer $API_TOKEN" \
 --data "{
@@ -20,5 +23,6 @@ if [[ -n "$error_message" ]]; then
     exit 1
 fi
 
-# Unformatted response
-echo "$response" | jq -r '.data.cargo.inventory'
+# Remaining cargo
+printf "Remaining Cargo:\n"
+echo "$response" | jq -r '.data.cargo.inventory | .[] | "\(.symbol): \(.units|tostring)"'
