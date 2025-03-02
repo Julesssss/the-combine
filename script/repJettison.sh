@@ -28,7 +28,6 @@ done <<< "$(echo "$response" | jq -r '.data.inventory[].symbol')"
 cargo_symbols=($(echo "${cargo_symbols[@]}" | tr ' ' '\n' | grep -v -w "$EXCLUDED_MATERIAL"))
 
 # Jettison
-echo "Cargo Symbols:"
 for symbol in "${cargo_symbols[@]}"; do
     echo "Jettison $symbol"
     sh "$SCRIPT_DIR/jettison.sh" "$SHIP_NAME" "$symbol"
