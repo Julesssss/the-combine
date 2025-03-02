@@ -14,7 +14,7 @@ while true; do
     sleep 2
 
     # Cooldown
-    for i in {1..7}; do
+    for i in {0..7}; do
         printf "\nwaiting for cooldown..."
         sleep 10 # Wait for cooldown
     done

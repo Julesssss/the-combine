@@ -18,9 +18,8 @@ if [[ -n "$error_message" ]]; then
 fi
 
 # Format waypoint results
-waypoints=$(echo "$response" | jq -r '
+echo "$response" | jq -r '
     .data.waypoints[] | 
     .symbol + ": " + (.x|tostring) + "/" + (.y|tostring) + " " + .type + 
     " [" + ( [.traits[].symbol] | join(", ") ) + "]"
-')
-echo "$waypoints"
+'
