@@ -19,5 +19,7 @@ fi
 # Get cargo
 EXTRACTED=$(echo "$response" | jq -r '"\nExtracted " + (.data.extraction.yield.units|tostring) + " " + .data.extraction.yield.symbol')
 echo "$EXTRACTED"
-CARGO_INVENTORY=$(echo "$response" | jq '.data.cargo.inventory[] | "\(.name): \(.units)"')
-echo "$CARGO_INVENTORY"
+
+# Remaining cargo
+# CARGO_INVENTORY=$(echo "$response" | jq '.data.cargo.inventory[] | "\(.name): \(.units)"')
+# echo "$CARGO_INVENTORY"

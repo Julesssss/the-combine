@@ -33,3 +33,8 @@ for symbol in "${cargo_symbols[@]}"; do
     sh "$SCRIPT_DIR/jettison.sh" "$SHIP_NAME" "$symbol"
     sleep 1
 done
+
+response=$(curl -s --location "https://api.spacetraders.io/v2/my/ships/$SHIP_NAME/cargo" \
+--header "Authorization: Bearer $API_TOKEN")
+printf "Remaining Cargo:\n"
+echo "$response" | jq -r '.data.inventory | .[] | "\(.symbol): \(.units|tostring)"'

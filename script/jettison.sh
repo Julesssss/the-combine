@@ -24,5 +24,5 @@ if [[ -n "$error_message" ]]; then
 fi
 
 # Remaining cargo
-printf "Remaining Cargo:\n"
-echo "$response" | jq -r '.data.cargo.inventory | .[] | "\(.symbol): \(.units|tostring)"'
+# printf "Remaining Cargo:\n"
+# echo "$response" | jq -r '.data.cargo.inventory | .[] | "\(.symbol): \(.units|tostring)"'
