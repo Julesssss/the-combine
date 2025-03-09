@@ -14,7 +14,7 @@ while true; do
     sh "$SCRIPT_DIR/extract.sh" "$SHIP_NAME"
 
     # Jettison
-    sh script/repJettison.sh THECOMBINE-1 "$EXCLUDED_MATERIAL"
+    sh script/repJettison.sh "$SHIP_NAME" "$EXCLUDED_MATERIAL"
 
     # Cooldown
     for i in {0..7}; do

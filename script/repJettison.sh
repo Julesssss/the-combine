@@ -16,7 +16,7 @@ if [ -z "$EXCLUDED_MATERIAL" ]; then
 fi
 
 # Get cargo
-response=$(curl -s --location 'https://api.spacetraders.io/v2/my/ships/THECOMBINE-1/cargo' \
+response=$(curl -s --location "https://api.spacetraders.io/v2/my/ships/$SHIP_NAME/cargo" \
 --header "Authorization: Bearer $API_TOKEN")
 
 # Extract cargo symbols into an array
@@ -31,7 +31,7 @@ cargo_symbols=($(echo "${cargo_symbols[@]}" | tr ' ' '\n' | grep -v -w "$EXCLUDE
 for symbol in "${cargo_symbols[@]}"; do
     echo "Jettison $symbol"
     sh "$SCRIPT_DIR/jettison.sh" "$SHIP_NAME" "$symbol"
-    sleep 1
+    sleep .4
 done
 
 response=$(curl -s --location "https://api.spacetraders.io/v2/my/ships/$SHIP_NAME/cargo" \
