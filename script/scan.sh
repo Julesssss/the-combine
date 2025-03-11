@@ -17,6 +17,8 @@ if [[ -n "$error_message" ]]; then
     exit 1
 fi
 
+DB_FILE="database.db"
+
 # Loop through waypoints json
 echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
     echo "Processing waypoint"
