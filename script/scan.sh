@@ -17,9 +17,17 @@ if [[ -n "$error_message" ]]; then
     exit 1
 fi
 
-# Format waypoint results
-echo "$response" | jq -r '
-    .data.waypoints[] | 
-    .symbol + ": " + (.x|tostring) + "/" + (.y|tostring) + " " + .type + 
-    " [" + ( [.traits[].symbol] | join(", ") ) + "]"
-'
+# Loop through waypoints json
+echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
+    echo "Processing waypoint"
+    systemSymbol=$(echo "$waypoint" | jq -r '.systemSymbol')
+    symbol=$(echo "$waypoint" | jq -r '.symbol')
+    type=$(echo "$waypoint" | jq -r '.type')
+    x=$(echo "$waypoint" | jq -r '.x')
+    y=$(echo "$waypoint" | jq -r '.y')
+    traits=$(echo "$waypoint" | jq -r '[.traits[].symbol] | join(" ")')
+
+    # Print wayloint
+    echo "System: $systemSymbol, Symbol: $symbol, Type: $type, X: $x, Y: $y, Traits: $traits"
+
+done
