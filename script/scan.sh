@@ -17,8 +17,6 @@ if [[ -n "$error_message" ]]; then
     exit 1
 fi
 
-DB_FILE="database.db"
-
 # Loop through waypoints json
 echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
     echo "Processing waypoint"
@@ -29,7 +27,7 @@ echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
     y=$(echo "$waypoint" | jq -r '.y')
     traits=$(echo "$waypoint" | jq -r '[.traits[].symbol] | join(" ")')
 
-    # Print wayloint
+    # Print waypoint
+    sqlite3 database.db "insert into waypoints3 values('$symbol', '$systemSymbol', 'planet', 6, 7);"
     echo "System: $systemSymbol, Symbol: $symbol, Type: $type, X: $x, Y: $y, Traits: $traits"
-
 done
