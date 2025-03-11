@@ -28,6 +28,8 @@ echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
     traits=$(echo "$waypoint" | jq -r '[.traits[].symbol] | join(" ")')
 
     # Print waypoint
-    sqlite3 database.db "insert into waypoints3 values('$symbol', '$systemSymbol', 'planet', 6, 7);"
+    sqlite3 database.db "insert into waypoints3 values('$symbol', '$systemSymbol', '$type', '$x', '$y');"
     echo "System: $systemSymbol, Symbol: $symbol, Type: $type, X: $x, Y: $y, Traits: $traits"
+
 done
+exit 1
