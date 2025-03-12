@@ -17,9 +17,10 @@ if [[ -n "$error_message" ]]; then
     exit 1
 fi
 
+sqlite3 database.db "create table IF NOT EXISTS waypoints (id TEXT, system TEXT, type TEXT, x INT, y INT);"
+
 # Loop through waypoints json
 echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
-    echo "Processing waypoint"
     systemSymbol=$(echo "$waypoint" | jq -r '.systemSymbol')
     symbol=$(echo "$waypoint" | jq -r '.symbol')
     type=$(echo "$waypoint" | jq -r '.type')
@@ -27,9 +28,9 @@ echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
     y=$(echo "$waypoint" | jq -r '.y')
     traits=$(echo "$waypoint" | jq -r '[.traits[].symbol] | join(" ")')
 
-    # Print waypoint
-    sqlite3 database.db "insert into waypoints3 values('$symbol', '$systemSymbol', '$type', '$x', '$y');"
-    echo "System: $systemSymbol, Symbol: $symbol, Type: $type, X: $x, Y: $y, Traits: $traits"
+    # Print waypoint and insert to db
+    echo "$symbol: $x/$y  [$traits]"
+    sqlite3 database.db "insert into waypoints (id, system, type, x, y) values('$symbol', '$systemSymbol', '$type', $x, $y);"
 
 done
 exit 1
