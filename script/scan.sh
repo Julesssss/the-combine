@@ -22,7 +22,8 @@ sqlite3 database.db "CREATE TABLE IF NOT EXISTS waypoints (
     system TEXT NOT NULL, 
     type TEXT NOT NULL, 
     x INT NOT NULL, 
-    y INT NOT NULL
+    y INT NOT NULL,
+    traits TEXT
 );"
 
 # Loop through waypoints json
@@ -32,11 +33,12 @@ echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
     type=$(echo "$waypoint" | jq -r '.type')
     x=$(echo "$waypoint" | jq -r '.x')
     y=$(echo "$waypoint" | jq -r '.y')
-    traits=$(echo "$waypoint" | jq -r '[.traits[].symbol] | join(" ")')
+    traits=$(echo "$waypoint" | jq -c '[.traits[].symbol]')
 
     # Print waypoint and insert to db
     echo "$symbol: $x/$y  [$traits]"
-    sqlite3 database.db "insert into waypoints (id, system, type, x, y) values('$symbol', '$systemSymbol', '$type', $x, $y);"
+    sqlite3 database.db "insert into waypoints (id, system, type, x, y, traits) values('$symbol', '$systemSymbol', '$type', $x, $y, '$traits');"
 
 done
-exit 1
+
+printf "Scan complete!\n"
