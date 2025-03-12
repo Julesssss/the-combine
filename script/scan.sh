@@ -17,7 +17,13 @@ if [[ -n "$error_message" ]]; then
     exit 1
 fi
 
-sqlite3 database.db "create table IF NOT EXISTS waypoints (id TEXT, system TEXT, type TEXT, x INT, y INT);"
+sqlite3 database.db "CREATE TABLE IF NOT EXISTS waypoints (
+    id TEXT PRIMARY KEY, 
+    system TEXT NOT NULL, 
+    type TEXT NOT NULL, 
+    x INT NOT NULL, 
+    y INT NOT NULL
+);"
 
 # Loop through waypoints json
 echo "$response" | jq -c '.data.waypoints[]' | while IFS= read -r waypoint; do
