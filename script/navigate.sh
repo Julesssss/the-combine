@@ -18,7 +18,14 @@ response=$(curl -s --location "https://api.spacetraders.io/v2/my/ships/$SHIP_NAM
 --data "{
     \"waypointSymbol\": \"$WAYPOINT\"
 }")
-echo "$response" | jq -r '.'
+# echo "$response" | jq -r '.'
+
+# Detect navigation error
+error_message=$(echo "$response" | jq -r '.error.message // empty')
+if [[ -n "$error_message" ]]; then
+    echo "Error: $error_message"
+    exit 1
+fi
 
 timestamp=$(echo "$response" | jq -r '.data.nav.route.arrival')
 destinationWaypoint=$(echo "$response" | jq -r '.data.nav.waypointSymbol')
@@ -33,10 +40,18 @@ end=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$target_clean" +%s)
 now=$(date +%s)
 diff=$(( end - now ))
 
+echo "Setting course for $destinationWaypoint"
+sleep 1
+
 if (( diff > 0 )); then
-  echo "Arriving in $diff seconds..."
-  sleep "$diff"
-  echo "Arrived in orbit at $destinationWaypoint -- ($destinationWType)"
+#   printf "Burning for %d seconds... " "$diff"
+
+  while (( diff-- > 0 )); do
+      printf "\rBurning for %d seconds... " "$diff"
+      sleep 1
+  done
+
+  printf "\nArrived in orbit at %s -- (%s)\n" "$destinationWaypoint" "$destinationWType"
 else
-  echo "Target time in past."
+  echo "Error: Timestamp must be in future."
 fi
