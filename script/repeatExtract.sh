@@ -4,17 +4,16 @@
 SCRIPT_DIR=$(dirname "$0")
 
 # Ship to control
-SHIP_NAME=${1:-"NO SHIP PASSED"}
-EXCLUDED_MATERIAL=${2:-"NO EXCLUDED MATERIAL"}
+EXCLUDED_MATERIAL=${1:-"NO EXCLUDED MATERIAL"}
 
 # Restricted repeats
 while true; do
 
     # Extract
-    sh "$SCRIPT_DIR/extract.sh" "$SHIP_NAME"
+    sh "$SCRIPT_DIR/extract.sh" "THE-COMBINE-1"
 
     # Jettison
-    sh script/repJettison.sh "$SHIP_NAME" "$EXCLUDED_MATERIAL"
+    sh "$SCRIPT_DIR/repJettison.sh" "THE-COMBINE-1" "$EXCLUDED_MATERIAL"
 
     # Cooldown
     for i in {0..7}; do
