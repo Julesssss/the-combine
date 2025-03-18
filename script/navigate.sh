@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get initial script dir
+SCRIPT_DIR=$(dirname "$0")
+
 # Get API token from root dir
 API_TOKEN=$(cat "$(dirname "$0")/../api_token.txt")
 
@@ -18,7 +21,6 @@ response=$(curl -s --location "https://api.spacetraders.io/v2/my/ships/$SHIP_NAM
 --data "{
     \"waypointSymbol\": \"$WAYPOINT\"
 }")
-# echo "$response" | jq -r '.'
 
 # Detect navigation error
 error_message=$(echo "$response" | jq -r '.error.message // empty')
@@ -41,16 +43,17 @@ now=$(date +%s)
 diff=$(( end - now ))
 
 echo "Setting course for $destinationWaypoint"
-sleep 1
+sleep .3
 
 if (( diff > 0 )); then
-#   printf "Burning for %d seconds... " "$diff"
+  afplay "$SCRIPT_DIR/ship-burn-248182.wav"
 
   while (( diff-- > 0 )); do
       printf "\rBurning for %d seconds... " "$diff"
       sleep 1
   done
 
+  afplay "$SCRIPT_DIR/ship-scan-159230.mp3"
   printf "\nArrived in orbit at %s -- (%s)\n" "$destinationWaypoint" "$destinationWType"
 else
   echo "Error: Timestamp must be in future."
